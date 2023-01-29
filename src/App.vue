@@ -1,47 +1,26 @@
-<script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
-</script>
-
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-    </div>
-  </header>
-
-  <main>
-    <TheWelcome />
-  </main>
+  <div class="board">
+    <Column title="To do" :tasks="todo"></Column>
+    <Column title="In Progress" :tasks="inProgress"></Column>
+    <Column title="Testing"></Column>
+    <Column title="Done"></Column>
+  </div>
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
-}
+<script setup>
+import { reactive } from "vue";
+import Column from "./components/Column.vue";
+import "./styles.css";
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
+const todo = reactive([
+  { name: "John", id: 0 },
+  { name: "Joao", id: 1 },
+  { name: "Jean", id: 2 },
+]);
 
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-}
-</style>
+const inProgress = reactive([
+  { name: "John", id: 0 },
+  { name: "Joao", id: 1 },
+  { name: "Jean", id: 2 },
+]);
+</script>
