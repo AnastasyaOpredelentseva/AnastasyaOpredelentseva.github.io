@@ -1,6 +1,12 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 20px;
+}
+
 .board {
   display: flex;
-  flex-direction: row;
   justify-content: space-between;
   width: 100%;
   gap: 20px;
@@ -35,4 +41,43 @@
   padding: 0.75rem 1.25rem;
   background-color: #fff;
   border: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.button {
+  background-color: rgba(51, 51, 51, 0.05);
+  border-radius: 8px;
+  font-size: 1.75rem;
+  border-width: 0;
+  color: #333333;
+  cursor: pointer;
+  display: inline-block;
+  padding: 12px 22px;
+}
+
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 99;
+  background-color: rgba(0, 0, 0, 0.2);
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  justify-content: center;
+}
+.popup-inner {
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  padding: 32px;
+  gap: 20px;
+}
+
+.input {
+  border: 0;
+  border-bottom: 1px solid black;
 }
