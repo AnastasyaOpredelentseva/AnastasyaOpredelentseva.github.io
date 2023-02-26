@@ -8,6 +8,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "effector": "^22.5.0",
+    "effector-vue": "^22.2.0",
     "vue": "^3.2.45",
     "vuedraggable": "^4.1.0"
   },
