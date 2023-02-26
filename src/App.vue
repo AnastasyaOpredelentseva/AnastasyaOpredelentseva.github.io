@@ -1,45 +1,98 @@
 <template>
-  <div class="board">
-    <button @click="add">Add</button>
-    <button @click="remove">Remove</button>
-    <button @click="reset">reset</button>
+  <button @click="add">Add</button>
 
-    <Column title="To do" :tasks="todo"></Column>
-    <Column title="In Progress" :tasks="inProgress"></Column>
-    <Column title="Testing"></Column>
-    <Column title="Done"></Column>
+  <div class="board">
+    <div
+      class="column-container"
+      @drop="onDrop($event, 1)"
+      @dragenter.prevent
+      @dragover.prevent
+    >
+      <h2 class="title">TO DO</h2>
+      <div
+        v-for="item in getList(1)"
+        :key="item.id"
+        class="task-list"
+        draggable="true"
+        @dragstart="startDrag($event, item)"
+      >
+        <div class="task">{{ item.title }}</div>
+      </div>
+    </div>
+    <div
+      class="column-container"
+      @drop="onDrop($event, 2)"
+      @dragenter.prevent
+      @dragover.prevent
+    >
+      <h2 class="title">IN PROGRESS</h2>
+      <div
+        v-for="item in getList(2)"
+        :key="item.id"
+        class="task-list"
+        draggable="true"
+        @dragstart="startDrag($event, item)"
+      >
+        <div class="task">{{ item.title }}</div>
+      </div>
+    </div>
+    <div
+      class="column-container"
+      @drop="onDrop($event, 3)"
+      @dragenter.prevent
+      @dragover.prevent
+    >
+      <h2 class="title">DONE</h2>
+      <div
+        v-for="item in getList(3)"
+        :key="item.id"
+        class="task-list"
+        draggable="true"
+        @dragstart="startDrag($event, item)"
+      >
+        <div class="task">{{ item.title }}</div>
+      </div>
+    </div>
   </div>
 </template>
 
-<script setup>
-import { reactive } from "vue";
-
-import { createStore, createEvent } from "effector";
-import { useVModel } from "effector-vue/composition";
-import Column from "./components/Column.vue";
+<script>
+import { ref } from "vue";
 import "./styles.css";
 
-const inProgress = reactive([
-  { name: "John", id: 0 },
-  { name: "Joao", id: 1 },
-  { name: "Jean", id: 2 },
-]);
+export default {
+  setup() {
+    const items = ref([
+      { id: 0, title: "A", list: 1 },
+      { id: 1, title: "B", list: 1 },
+      { id: 2, title: "C", list: 1 },
+      { id: 3, title: "D", list: 2 },
+      { id: 3, title: "D", list: 3 },
+    ]);
 
-const add = createEvent("add");
-const remove = createEvent("remove");
-const reset = createEvent("reset");
+    const getList = (list) => {
+      return items.value.filter((item) => item.list === list);
+    };
 
-const $todo = createStore([
-  { name: "John", id: 0 },
-  { name: "Joao", id: 1 },
-  { name: "Jean", id: 2 },
-])
-  .on(add, (state) => [...state, { name: "Puck", id: 4 }])
-  .on(remove, (state) => {
-    state.length = state.length - 1;
-    return [...state];
-  })
-  .reset(reset);
-
-const todo = useVModel($todo);
+    const startDrag = (event, item) => {
+      event.dataTransfer.dropEffect = "move";
+      event.dataTransfer.effectAllowed = "move";
+      event.dataTransfer.setData("itemID", item.id);
+    };
+    const onDrop = (event, list) => {
+      const itemID = event.dataTransfer.getData("itemID");
+      const item = items.value.find((item) => item.id == itemID);
+      item.list = list;
+    };
+    const add = () => {
+      items.value.push({ id: items.value.length, title: "D", list: 1 });
+    };
+    return {
+      getList,
+      onDrop,
+      add,
+      startDrag,
+    };
+  },
+};
 </script>
