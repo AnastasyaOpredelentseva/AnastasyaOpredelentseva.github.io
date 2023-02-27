@@ -32,63 +32,27 @@
       <button class="button" @click="remove">Remove task!</button>
     </Popup>
     <div class="board">
-      <div
-        class="column-container"
-        @drop="onDrop({ $event, list: todoColumnId })"
-        @dragenter.prevent
-        @dragover.prevent
-      >
-        <h2 class="title">TO DO</h2>
-        <div
-          v-for="item in getList(todoColumnId)"
-          :key="item.id"
-          class="task-list"
-          draggable="true"
-          @dragstart="startDrag({ $event, item })"
-        >
-          <div class="task" @click="handleEditTask(item)">
-            {{ item.name }}
-          </div>
-        </div>
-      </div>
-      <div
-        class="column-container"
-        @drop="onDrop({ $event, list: inProgressColumnId })"
-        @dragenter.prevent
-        @dragover.prevent
-      >
-        <h2 class="title">IN PROGRESS</h2>
-        <div
-          v-for="item in getList(inProgressColumnId)"
-          :key="item.id"
-          class="task-list"
-          draggable="true"
-          @dragstart="startDrag({ $event, item })"
-        >
-          <div class="task" @click="handleEditTask(item)">
-            {{ item.name }}
-          </div>
-        </div>
-      </div>
-      <div
-        class="column-container"
-        @drop="onDrop({ $event, list: doneColumnId })"
-        @dragenter.prevent
-        @dragover.prevent
-      >
-        <h2 class="title">DONE</h2>
-        <div
-          v-for="item in getList(doneColumnId)"
-          :key="item.id"
-          class="task-list"
-          draggable="true"
-          @dragstart="startDrag({ $event, item })"
-        >
-          <div class="task" @click="handleEditTask(item)">
-            {{ item.name }}
-          </div>
-        </div>
-      </div>
+      <ColumnContainer
+        :onDrop="($event) => onDrop({ $event, list: todoColumnId })"
+        :startDrag="($event, item) => startDrag({ $event, item })"
+        :title="`TO DO`"
+        :list="getList(todoColumnId)"
+        :handleEditTask="(item) => handleEditTask(item)"
+      />
+      <ColumnContainer
+        :onDrop="($event) => onDrop({ $event, list: inProgressColumnId })"
+        :startDrag="($event, item) => startDrag({ $event, item })"
+        :title="`IN PROGRESS`"
+        :list="getList(inProgressColumnId)"
+        :handleEditTask="(item) => handleEditTask(item)"
+      />
+      <ColumnContainer
+        :onDrop="($event) => onDrop({ $event, list: doneColumnId })"
+        :startDrag="($event, item) => startDrag({ $event, item })"
+        :title="`DONE`"
+        :list="getList(doneColumnId)"
+        :handleEditTask="(item) => handleEditTask(item)"
+      />
     </div>
   </div>
 </template>
@@ -97,6 +61,7 @@
 import { ref } from "vue";
 import { createStore, createEvent } from "effector";
 import Popup from "./components/Popup.vue";
+import ColumnContainer from "./components/ColumnContainer.vue";
 import { useVModel } from "effector-vue/composition";
 import "./styles.css";
 const todoColumnId = 1;
